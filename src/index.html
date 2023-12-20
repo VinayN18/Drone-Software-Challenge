@@ -9,12 +9,12 @@
 
 <body>
   <div id="root-window">
-    <!-- Three.js adds a `canvas` element to this element-->
     <div id="render-target"></div>
     <div id="ui">
       <div id="title-bar">
         <div class="title-bar-left-items title-bar-items">
-          $1000
+          <span id="currency-symbol">₹</span>
+          <span id="budget">10000000</span>
         </div>
         <div class="title-bar-center-items title-bar-items">
           My City
@@ -25,30 +25,32 @@
         </div>
       </div>
       <div id="ui-toolbar" class="container">
-        <button id='button-select' class="ui-button selected" data-type="select"
-          onclick="game.onToolSelected(event)">
+        <button id='button-select' class="ui-button selected" data-type="select" onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="/icons/select.png">
         </button>
-        <button id='button-bulldoze' class="ui-button" data-type="bulldoze"
-          onclick="game.onToolSelected(event)">
+        <button id='button-bulldoze' class="ui-button" data-type="bulldoze" onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="/icons/bulldozer.png">
         </button>
+        bulldozer
         <button id='button-residential' class="ui-button" data-type="residential"
           onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="/icons/house.png">
         </button>
+        house
         <button id='button-commercial' class="ui-button" data-type="commercial"
           onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="/icons/office.png">
         </button>
+        office
         <button id='button-industrial' class="ui-button" data-type="industrial"
           onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="/icons/factory.png">
         </button>
-        <button id='button-road' class="ui-button" data-type="road"
-          onclick="game.onToolSelected(event)">
+        factory
+        <button id='button-road' class="ui-button" data-type="road" onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="/icons/road.png">
         </button>
+        road
         <button id='button-pause' class="ui-button" onclick="game.togglePause()">
           <img id='pause-button-icon' class="toolbar-icon" src="/icons/pause.png">
         </button>
@@ -59,7 +61,7 @@
         </div>
         <div id="info-details"> </div>
       </div>
-      <div id="instructions">
+      <div id="instructions" style="margin-left: 100px;">
         INTERACT - Left Mouse<br>
         ROTATE - Right Mouse<br>
         PAN - Control + Right Mouse<br>
@@ -72,6 +74,7 @@
       </div>
     </div>
   </div>
+
 
   <script type="module">
     import { Game } from './scripts/game.js';
