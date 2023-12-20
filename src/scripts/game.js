@@ -16,6 +16,16 @@ export class Game {
   // Last time mouse was moved
   lastMove = new Date();
 
+  /**
+   * The initial budget in rupees (1 crore)
+   */
+  initialBudget = 10000000;
+
+  /**
+   * The current budget
+   */
+  budget = this.initialBudget;
+
   constructor() {
     /**
      * The city data model
@@ -40,6 +50,9 @@ export class Game {
 
     // Prevent context menu from popping up
     this.sceneManager.gameWindow.addEventListener('contextmenu', (event) => event.preventDefault(), false);
+
+    // Update the budget display initially
+    this.#updateBudgetDisplay();
   }
 
   /**
@@ -60,7 +73,7 @@ export class Game {
    * @param {*} event 
    */
   onToolSelected(event) {
-    // Deselect previously selected button and selected this one
+    // Deselect previously selected button and select this one
     if (this.selectedControl) {
       this.selectedControl.classList.remove('selected');
     }
@@ -112,7 +125,7 @@ export class Game {
 
     this.sceneManager.setHighlightedMesh(hoverObject);
 
-    // If left mouse-button is down, use the tool as well
+    // If left mouse button is down, use the tool as well
     if (hoverObject && event.buttons & 1) {
       this.#useActiveTool(hoverObject);
     }
@@ -134,12 +147,42 @@ export class Game {
       } else if (this.activeToolId === 'bulldoze') {
         this.city.bulldoze(tile.x, tile.y);
         this.sceneManager.applyChanges(this.city);
+        this.#updateBudgetAfterConstruction('bulldoze');
       } else if (!tile.building) {
         const buildingType = this.activeToolId;
-        this.city.placeBuilding(tile.x, tile. y, buildingType);
+        this.city.placeBuilding(tile.x, tile.y, buildingType);
         this.sceneManager.applyChanges(this.city);
+        this.#updateBudgetAfterConstruction(buildingType);
       }
     }
+  }
+
+  #updateBudgetAfterConstruction(constructionType) {
+    // Deduct cost from the budget
+    switch (constructionType) {
+      case 'road':
+        this.budget -= 5000;
+        break;
+      case 'residential':
+        this.budget -= 1000000; 
+      case 'commercial':
+        this.budget -= 1500000; 
+        break;
+      case 'industrial':
+        this.budget -= 2000000; 
+        break;
+    }
+
+    this.#updateBudgetDisplay();
+  }
+
+  #updateBudgetDisplay() {
+    const budgetDisplay = document.getElementById('budget');
+    budgetDisplay.innerHTML = this.formatBudget(this.budget);
+  }
+
+  formatBudget(amount) {
+    return amount.toLocaleString();
   }
 
   #updateInfoPanel() {
